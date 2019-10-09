@@ -1,0 +1,15 @@
+.right-container {
+  /* border: 1px solid red; */
+  flex-direction: column !important;
+}
+
+.right-container .card {
+  margin-bottom: 36px !important;
+  height: 246px !important;
+  width: 76%;
+}
+
+.card-img {
+  margin-left: 10px;
+  margin-top: 15px;
+}
