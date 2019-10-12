@@ -1,9 +1,6 @@
 import React from 'react';
-import { Story } from './Story';
 import '../css/Post.css';
 import {
-  BrowserRouter as Router,
-  Route,
   Link
 } from "react-router-dom";
 
@@ -16,9 +13,9 @@ function Post({ postData }){
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            <Link to={`/${postData.title}`}><h5 className="card-title">{postData.title}</h5></Link>
+            <Link to={`/posts/${postData.title}`}><h5 className="card-title">{postData.title}</h5></Link>
             <p className="card-text"><small className="text-muted">{postData.date}</small></p>
-            <p className="card-text">{postData.content}</p>
+            <p className="card-text">{postData.headline}</p>
           </div>
         </div>
       </div>

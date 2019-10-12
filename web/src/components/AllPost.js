@@ -1,12 +1,9 @@
 import React from 'react';
+import axios from 'axios';
 import { Profile } from './Profile';
 import { Post } from './Post';
-import axios from 'axios';
-import {
-  Link
-} from "react-router-dom";
 
-class Home extends React.Component {
+class AllPost extends React.Component{
   state = {
     posts: [],
     isLoading: false,
@@ -19,7 +16,7 @@ class Home extends React.Component {
     })
 
     axios
-    .get('http://localhost:5000/post/n')
+    .get('http://localhost:5000/post/all')
     .then(res => {
       const posts = res.data.data.map(
         obj => obj
@@ -46,26 +43,30 @@ class Home extends React.Component {
         <div className="left-container">
           <Profile />
         </div>
-        <div className="right-container">
-          {
-            isLoading ? (
-              <div>Loading...</div>
-            ) :  error ? (
-              <div>{error}</div>
-            ): (
-            posts.map(post => (
-              <Post postData={post} key={post.id}/>
-            )))
-          }
 
-          <div className="button-container">
-            <button type="button" className="btn btn-outline-secondary"><Link to="/posts/all-posts/data">See More</Link></button>
+        <div className="right-container">
+          <div className="card all-posts">
+            <div className="card-body heading">
+              <h1>All Posts</h1>
+            </div>
           </div>
+
+        {
+          isLoading ? (
+            <div>Loading...</div>
+          ) :  error ? (
+            <div>{error}</div>
+          ): (
+          posts.map(post => (
+            <Post postData={post} key={post.id}/>
+          )))
+        }
         </div>
       </div>
     );
   }
+
 }
 
 
-export { Home };
+export { AllPost };

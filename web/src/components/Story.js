@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { Profile } from './Profile';
+import { ActualPost } from './ActualPost';
+
 
 class Story extends React.Component{
   state = {
@@ -19,7 +22,6 @@ class Story extends React.Component{
       const posts = res.data.data.map(
         obj => obj
       );
-      console.log(posts);
       this.setState({ posts });
     })
     .catch(error => {
@@ -39,12 +41,21 @@ class Story extends React.Component{
     const { posts, isLoading, error } = this.state;
     return(
       posts.map(post => (
-        <div className="card mb-3 post">
-          <img src={post.image} class="card-img-top" alt="story" />
-          <div className="card-body">
-            <h5 className="card-title">{post.title}</h5>
-            <p className="card-text">{post.content}</p>
-            <p className="card-text"><small className="text-muted">{post.date}</small></p>
+        <div className="content">
+          <div className="left-container">
+            <Profile post={this.props.data}/>
+          </div>
+
+          <div className="right-container">
+            {
+              isLoading ? (
+                <div>Loading...</div>
+              ) : error ? (
+                <div>{error}</div>
+              ) : (
+                <ActualPost postData={post} key={post.id}/>
+              )
+            }
           </div>
         </div>
       ))

@@ -18,6 +18,12 @@ app.use('/', express.static('public'));
 var postController = require('./controllers/postController');
 app.use('/post', postController);
 
+var lastNController = require('./controllers/lastNController');
+app.use('/post/n', lastNController);
+
+var lastTwoController = require('./controllers/lastTwoController');
+app.use('/post/two', lastTwoController);
+
 var allPostController = require('./controllers/allPostController');
 app.use('/post/all', allPostController);
 

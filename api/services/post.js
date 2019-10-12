@@ -34,6 +34,7 @@ const Post = {
           let newPost = {
             id: answer + 1,
             title: data.title,
+            headline: data.headline,
             content: data.content,
             author: data.author,
             category: data.category,
@@ -52,6 +53,70 @@ const Post = {
             callback(null, response);
           }
         });
+      });
+    });
+  },
+
+  findLastN: function(data, callback){
+
+    let response = {}
+
+    // Create a new MongoClient
+    const client = new MongoClient(url, mongoOptions);
+    // Use connect method to connect to the Server
+    client.connect(function(err) {
+      assert.equal(null, err);
+      console.log("Connected successfully to server");
+
+      //get Database
+      const db = client.db(dbName);
+
+      // Get the documents collection
+      const collection = db.collection('posts');
+
+      // Find some documents
+      collection.find({}).limit(4).toArray(function(err, docs) {
+        if(!err){
+          response['status'] = 'success';
+          response['data'] = docs;
+          callback(null, response);
+        }else {
+          response['status'] = 'errorDB';
+          response['data'] = data;
+          callback(null, response);
+        }
+      });
+    });
+  },
+
+  findLastTwo: function(data, callback){
+
+    let response = {}
+
+    // Create a new MongoClient
+    const client = new MongoClient(url, mongoOptions);
+    // Use connect method to connect to the Server
+    client.connect(function(err) {
+      assert.equal(null, err);
+      console.log("Connected successfully to server");
+
+      //get Database
+      const db = client.db(dbName);
+
+      // Get the documents collection
+      const collection = db.collection('posts');
+
+      // Find some documents
+      collection.find({}).limit(2).toArray(function(err, docs) {
+        if(!err){
+          response['status'] = 'success';
+          response['data'] = docs;
+          callback(null, response);
+        }else {
+          response['status'] = 'errorDB';
+          response['data'] = data;
+          callback(null, response);
+        }
       });
     });
   },

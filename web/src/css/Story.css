@@ -74,19 +74,12 @@
   width: 76%;
 }
 
-.right-container .card-img-top {
-  height: 300px;
-  object-fit: contain;
-}
-
 .about {
   height: 500px !important;
 }
 .card-img {
   margin-left: 10px;
   margin-top: 15px;
-  width: 201px;
-  height: 197px;
 }
 
 .left-container .card-img {
@@ -166,6 +159,9 @@ form {
   height: 100% !important;
 }
 
+.post .card-img-top {
+  max-height: 300px;
+}
 
 footer {
   padding-top: 30px;
