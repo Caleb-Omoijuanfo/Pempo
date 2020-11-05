@@ -1,69 +1,66 @@
 import React from 'react';
-import axios from 'axios';
+
+import PostService from '../services/postService';
 import { Profile } from './Profile';
-import { ActualPost } from './ActualPost';
+import defaultImg from '../assets/img/default.jpg';
 
 
 class Story extends React.Component{
   state = {
-    posts: [],
+    post: {},
     isLoading: false,
     error: null
+  }
+
+  fetchPost = async () => {
+    this.setState({ isLoading: false });
+
+    const { id } = this.props.match.params;
+    try {
+      let post = await PostService.fetchPost(id);
+      post = post.data.post
+      console.log("Post: ", post);
+
+      this.setState({
+        post: {...post}
+      })
+
+    } catch (error) {
+      //figure out what to do with the error.
+        console.log(error);
+    }
   }
 
   componentDidMount(){
     this.setState({
       isLoading: true
-    })
-
-    axios
-    .get('http://localhost:5000/post/title', {headers: { title: this.props.match.params.id}} )
-    .then(res => {
-      const posts = res.data.data.map(
-        obj => obj
-      );
-      this.setState({ posts });
-    })
-    .catch(error => {
-      this.setState(() => {
-        return {
-          error: error.message
-        }
-      })
-    })
-    .finally(() =>{
-      this.setState({isLoading: false})
-    })
-
-  }
+    });
+    this.fetchPost();
+  };
 
   render(){
-    const { posts, isLoading, error } = this.state;
+    const { post, isLoading, error } = this.state;
+    console.log("postInRender: ", post);
     return(
-      posts.map(post => (
-        <div className="content">
-          <div className="left-container">
-            <Profile post={this.props.data}/>
-          </div>
+      <div className="content">
+        <div className="left-container">
+          <Profile post={this.props.data}/>
+        </div>
 
-          <div className="right-container">
-            {
-              isLoading ? (
-                <div>Loading...</div>
-              ) : error ? (
-                <div>{error}</div>
-              ) : (
-                <ActualPost postData={post} key={post.id}/>
-              )
-            }
+        <div className="right-container">
+          <div className="card mb-3 post">
+            <img src={defaultImg} className="card-img-top" alt="story" />
+            <div className="card-body">
+              <h5 className="card-title">{post.title}</h5>
+              <p className="card-text"><small className="text-muted">{post.dateCreated}</small></p>
+              <p className="card-text">{post.content}</p>
+            </div>
           </div>
         </div>
-      ))
+      </div>
     );
   }
 
 }
-
-// {headers: { title: this.props.title}}
 
 export { Story };

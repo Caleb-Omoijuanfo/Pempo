@@ -1,42 +1,40 @@
 import React from 'react';
 import { Profile } from './Profile';
 import { Post } from './Post';
-import axios from 'axios';
 import {
   Link
 } from "react-router-dom";
+import PostService from '../services/postService';
 
 class Home extends React.Component {
   state = {
     posts: [],
     isLoading: false,
-    error: null
+    error: null,
+    start: 0,
+    length: 10
   }
 
+  fetchPosts = async () => {
+    this.setState({ isLoading: false });
+
+    try {
+      let posts = await PostService.fetchPosts(this.state.start, this.state.length);
+
+      this.setState({ posts: [...posts.data.data]});
+
+      console.log("Posts: ", posts);
+      
+    } catch (error) {
+      //figure out what to do with the error. 
+        console.log(error);
+    }
+  }
+
+
   componentDidMount(){
-    this.setState({
-      isLoading: true
-    })
-
-    axios
-    .get('http://localhost:5000/post/n')
-    .then(res => {
-      const posts = res.data.data.map(
-        obj => obj
-      );
-      this.setState({ posts });
-    })
-    .catch(error => {
-      this.setState(() => {
-        return {
-          error: error.message
-        }
-      })
-    })
-    .finally(() =>{
-      this.setState({isLoading: false})
-    })
-
+    this.setState({ isLoading: true });
+    this.fetchPosts();
   }
 
   render(){
@@ -48,19 +46,15 @@ class Home extends React.Component {
         </div>
         <div className="right-container">
           {
-            isLoading ? (
-              <div>Loading...</div>
-            ) :  error ? (
-              <div>{error}</div>
-            ): (
-            posts.map(post => (
-              <Post postData={post} key={post.id}/>
-            )))
-          }
-
-          <div className="button-container">
-            <button type="button" className="btn btn-outline-secondary"><Link to="/posts/all-posts/data">See More</Link></button>
-          </div>
+            isLoading ? <div>Loading...</div> : (
+              posts.map(post => (
+                <Post 
+                  key={post.id}
+                  postData={post}
+                />
+              ))
+            )
+          }          
         </div>
       </div>
     );
