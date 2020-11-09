@@ -1,6 +1,6 @@
 .right-container {
   /* border: 1px solid red; */
-  flex-direction: column !important;
+  flex-direction: column !important;  
 }
 
 .right-container .card {
