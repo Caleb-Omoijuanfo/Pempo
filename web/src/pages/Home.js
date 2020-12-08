@@ -6,6 +6,8 @@ import PostService from '../services/postService';
 import PostCardSKeleton from '../components/SkeletonUI/postCardSkeleton';
 import Error from '../components/Error/error';
 
+import '../css/Home.css';
+
 class Home extends React.Component {
   state = {
     posts: [],
